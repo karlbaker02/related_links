@@ -1,6 +1,8 @@
+require 'gds-api-adapters'
+
 namespace :content do
   desc 'Updates suggested related links for content from a JSON file'
-  task :update_related_links_from_json, [:json_path] => :environment do |_, args|
+  task :update_related_links_from_json, [:json_path] do |_, args|
     puts 'Reading and parsing data...'
 
     @publishing_api = GdsApi::PublishingApiV2.new(
@@ -43,7 +45,7 @@ namespace :content do
       bulk_publishing: true
     )
 
-    if response.status == 200
+    if response.code == 200
       puts "Updated related links for content #{source_content_id}"
     else
       @failed_content_ids << source_content_id
